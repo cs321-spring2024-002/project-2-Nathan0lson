@@ -18,12 +18,12 @@ public class MaxHeap {
         int l = left(i);
         int r = right(i);
         int largest;
-        if (l < size && heap[l].getKey() > heap[i].getKey()) {
+        if (l < size && heap[l].getPriority() > heap[i].getPriority()) {
             largest = l;
         } else {
             largest = i;
         }
-        if (r < size && heap[r].getKey() > heap[largest].getKey()) {
+        if (r < size && heap[r].getPriority() > heap[largest].getPriority()) {
             largest = r;
         }
         if (largest != i) {
@@ -55,7 +55,7 @@ public class MaxHeap {
         }
         int i = size;
         size++;
-        while (i > 0 && heap[parent(i)].getKey() < task.getKey()) {
+        while (i > 0 && heap[parent(i)].getPriority() < task.getPriority()) {
             heap[i] = heap[parent(i)];
             i = parent(i);
         }
@@ -63,11 +63,11 @@ public class MaxHeap {
     }
 
     public void increaseKey(int i, int key) {
-        if (key < heap[i].getKey()) {
+        if (key < heap[i].getPriority()) {
             return;
         }
-        heap[i].setKey(key);
-        while (i > 0 && heap[parent(i)].getKey() < heap[i].getKey()) {
+        heap[i].setPriority(key);
+        while (i > 0 && heap[parent(i)].getPriority() < heap[i].getPriority()) {
             swap(i, parent(i));
             i = parent(i);
         }
