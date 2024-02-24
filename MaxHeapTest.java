@@ -1,5 +1,5 @@
 import static org.junit.Assert.*;
-import java.util.Arrays;
+
 import org.junit.Test;
 
 public class MaxHeapTest {
@@ -7,100 +7,81 @@ public class MaxHeapTest {
     public void testIsEmpty() {
         MaxHeap heap = new MaxHeap();
         assertTrue(heap.isEmpty());
+    }
 
-        heap.insert(new Task(1, "Task 1"));
+    @Test
+    public void testIsNotEmpty() {
+        MaxHeap heap = new MaxHeap();
+        heap.insert(new Task(1, TaskInterface.TaskType.FEEDING, 0, "task"));
         assertFalse(heap.isEmpty());
     }
 
     @Test
     public void testInsert() {
         MaxHeap heap = new MaxHeap();
-        heap.insert(new Task(2, "Task 2"));
-        heap.insert(new Task(1, "Task 1"));
+        heap.insert(new Task(1, TaskInterface.TaskType.FEEDING, 0, "task1"));
+        heap.insert(new Task(2, TaskInterface.TaskType.FISHING, 0, "task2"));
 
-        // Check the heap array
-        Task[] heapArray = heap.getHeap();
-        assertEquals(2, heapArray.length);
-        assertEquals(2, heapArray[0].getPriority());
-        assertEquals(1, heapArray[1].getPriority());
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FISHING);
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FEEDING);
     }
 
     @Test
     public void testExtractMax1() {
         MaxHeap heap = new MaxHeap();
-        heap.insert(new Task(2, "Task 2"));
-        heap.insert(new Task(1, "Task 1"));
+        heap.insert(new Task(1, TaskInterface.TaskType.FEEDING, 0, "task1"));
+        heap.insert(new Task(2, TaskInterface.TaskType.FISHING, 0, "task2"));
 
-        assertEquals(2, heap.extractMax().getPriority());
-        assertEquals(1, heap.extractMax().getPriority());
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FISHING);
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FEEDING);
     }
 
     @Test
     public void testExtractMax2() {
         MaxHeap heap = new MaxHeap();
-        heap.insert(new Task(3, "Task 3"));
-        heap.insert(new Task(2, "Task 2"));
-        heap.insert(new Task(1, "Task 1"));
+        heap.insert(new Task(1, TaskInterface.TaskType.FEEDING, 0, "task1"));
+        heap.insert(new Task(2, TaskInterface.TaskType.FISHING, 0, "task2"));
+        heap.insert(new Task(3, TaskInterface.TaskType.FARM_MAINTENANCE, 0, "task3"));
 
-        assertEquals(3, heap.extractMax().getPriority());
-        assertEquals(2, heap.extractMax().getPriority());
-        assertEquals(1, heap.extractMax().getPriority());
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FARM_MAINTENANCE);
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FISHING);
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FEEDING);
     }
 
     @Test
     public void testIncreaseKey1() {
         MaxHeap heap = new MaxHeap();
-        heap.insert(new Task(2, "Task 2"));
-        heap.insert(new Task(1, "Task 1"));
+        heap.insert(new Task(1, TaskInterface.TaskType.FEEDING, 0, "task1"));
+        heap.insert(new Task(2, TaskInterface.TaskType.FISHING, 0, "task2"));
 
         heap.increaseKey(1, 3);
 
-        // Check the heap array
-        Task[] heapArray = heap.getHeap();
-        assertEquals(2, heapArray.length);
-        assertEquals(3, heapArray[0].getPriority());
-        assertEquals(2, heapArray[1].getPriority());
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FEEDING);
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FISHING);
     }
 
     @Test
     public void testIncreaseKey2() {
         MaxHeap heap = new MaxHeap();
-        heap.insert(new Task(3, "Task 3"));
-        heap.insert(new Task(2, "Task 2"));
-        heap.insert(new Task(1, "Task 1"));
+        heap.insert(new Task(1, TaskInterface.TaskType.FEEDING, 0, "task1"));
+        heap.insert(new Task(2, TaskInterface.TaskType.FISHING, 0, "task2"));
+        heap.insert(new Task(3, TaskInterface.TaskType.FARM_MAINTENANCE, 0, "task3"));
 
         heap.increaseKey(2, 4);
 
-        // Check the heap array
-        Task[] heapArray = heap.getHeap();
-        assertEquals(3, heapArray.length);
-        assertEquals(4, heapArray[0].getPriority());
-        assertEquals(3, heapArray[1].getPriority());
-        assertEquals(2, heapArray[2].getPriority());
-    }
-
-    @Test
-    public void testCheckIfMaxHeap() {
-        MaxHeap heap = new MaxHeap();
-        heap.insert(new Task(3, "Task 3"));
-        heap.insert(new Task(2, "Task 2"));
-        heap.insert(new Task(1, "Task 1"));
-
-        assertTrue(checkIfMaxHeap(heap.getHeap()));
-    }
-
-    @Test
-    public void testCheckIfSorted() {
-        Task[] array = { new Task(3, "Task 3"), new Task(2, "Task 2"), new Task(1, "Task 1") };
-        assertTrue(checkIfSorted(array));
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FISHING);
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FARM_MAINTENANCE);
+        assertEquals(heap.extractMax().getTaskType(), TaskInterface.TaskType.FEEDING);
     }
 
     @Test
     public void testInsertAscending() {
         MaxHeap heap = new MaxHeap();
-        for (int i = 1; i <= 5; i++) {
-            heap.insert(new Task(i, "Task " + i));
-        }
+        heap.insert(new Task(1, TaskInterface.TaskType.FEEDING, 0, "task1"));
+        heap.insert(new Task(2, TaskInterface.TaskType.FISHING, 0, "task2"));
+        heap.insert(new Task(3, TaskInterface.TaskType.FARM_MAINTENANCE, 0, "task3"));
+        heap.insert(new Task(4, TaskInterface.TaskType.FORAGING, 0, "task4"));
+        heap.insert(new Task(5, TaskInterface.TaskType.MINING, 0, "task5"));
 
         assertTrue(checkIfMaxHeap(heap.getHeap()));
         assertTrue(checkIfSorted(extractAll(heap)));
@@ -109,9 +90,11 @@ public class MaxHeapTest {
     @Test
     public void testInsertDescending() {
         MaxHeap heap = new MaxHeap();
-        for (int i = 5; i >= 1; i--) {
-            heap.insert(new Task(i, "Task " + i));
-        }
+        heap.insert(new Task(5, TaskInterface.TaskType.FEEDING, 0, "task1"));
+        heap.insert(new Task(4, TaskInterface.TaskType.FISHING, 0, "task2"));
+        heap.insert(new Task(3, TaskInterface.TaskType.FARM_MAINTENANCE, 0, "task3"));
+        heap.insert(new Task(2, TaskInterface.TaskType.FORAGING, 0, "task4"));
+        heap.insert(new Task(1, TaskInterface.TaskType.MINING, 0, "task5"));
 
         assertTrue(checkIfMaxHeap(heap.getHeap()));
         assertTrue(checkIfSorted(extractAll(heap)));
@@ -120,9 +103,11 @@ public class MaxHeapTest {
     @Test
     public void testInsertRandom() {
         MaxHeap heap = new MaxHeap();
-        for (int i = 1; i <= 5; i++) {
-            heap.insert(new Task((int) (Math.random() * 10) + 1, "Task " + i));
-        }
+        heap.insert(new Task(3, TaskInterface.TaskType.FEEDING, 0, "task1"));
+        heap.insert(new Task(1, TaskInterface.TaskType.FISHING, 0, "task2"));
+        heap.insert(new Task(2, TaskInterface.TaskType.FARM_MAINTENANCE, 0, "task3"));
+        heap.insert(new Task(5, TaskInterface.TaskType.FORAGING, 0, "task4"));
+        heap.insert(new Task(4, TaskInterface.TaskType.MINING, 0, "task5"));
 
         assertTrue(checkIfMaxHeap(heap.getHeap()));
         assertTrue(checkIfSorted(extractAll(heap)));
@@ -130,39 +115,41 @@ public class MaxHeapTest {
 
     // Helper methods
     private Task[] extractAll(MaxHeap heap) {
-        int size = heap.getSize();
+        int size = heap.size;
         Task[] extracted = new Task[size];
         for (int i = 0; i < size; i++) {
             extracted[i] = heap.extractMax();
         }
         return extracted;
     }
-	
-	private static boolean checkIfMaxHeap(Task[] h) {
-		for (int i = 0; i < h.length/2; i++) {
-			int left = i * 2 + 1;
-			int right = i * 2 + 2; 
-			if ((left < h.length) && (h[i].compareTo(h[left]) < 0)) {
-				System.out.println("checkIfMaxHeap failed!");
-				return false;
-			}
-			if ((right < h.length) && (h[i].compareTo(h[right]) < 0)) {
-				System.out.println("checkIfMaxHeap failed!");
-				return false;
-			}
-		}
-		System.out.println("checkIfMaxHeap passed!");
-		return true;
-	}
 
-	private static boolean checkIfSorted(int[] output) {
-		for (int i = 0; i < output.length - 1; i++) {
-			if (output[i] < output[i+1]) {
-				System.out.println("checkIfSorted failed!");
-				return false;
-			}
-		}
-		System.out.println("checkIfSorted passed!");
-		return true;
-	}
+    private static boolean checkIfMaxHeap(Task[] h) {
+        for (int i = 0; i < h.length; i++) {
+            int left = i * 2 + 1;
+            int right = i * 2 + 2;
+            if (h[i] != null && h[left] != null && h[right] != null) {
+                if (h[i].compareTo(h[left]) < 0) {
+                    System.out.println("checkIfMaxHeap failed!");
+                    return false;
+                }
+                if (h[i].compareTo(h[right]) < 0) {
+                    System.out.println("checkIfMaxHeap failed!");
+                    return false;
+                }
+            }
+        }
+        System.out.println("checkIfMaxHeap passed!");
+        return true;
+    }
+
+    private static boolean checkIfSorted(Task[] h) {
+        for (int i = 0; i < h.length-1; i++) {
+            if (h[i].compareTo(h[i+1]) < 0) {
+                System.out.println("checkIfSorted failed!");
+                return false;
+            }
+        }
+        System.out.println("checkIfSorted passed!");
+        return true;
+    }
 }

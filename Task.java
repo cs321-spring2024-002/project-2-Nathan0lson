@@ -34,6 +34,11 @@ public class Task implements TaskInterface, Comparable<Task> {
     }
 
     @Override
+    public String getTaskDescription() {
+        return description;
+    }
+
+    @Override
     public void incrementWaitingTime() {
         waitingTime++;
     }
@@ -46,5 +51,20 @@ public class Task implements TaskInterface, Comparable<Task> {
     @Override
     public int getWaitingTime() {
         return waitingTime;
+    }
+
+    @Override
+    public int compareTo(Task o) {
+        if (o.getPriority() > priority) {
+            return -1;
+        } else if (o.getPriority() < priority) {
+            return 1;
+        } else if (o.hourCreated > hourCreated) {
+            return 1;
+        } else if (o.hourCreated < hourCreated) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 }

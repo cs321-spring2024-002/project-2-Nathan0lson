@@ -2,45 +2,39 @@ import java.util.Random;
 
 public class TaskGenerator implements TaskGeneratorInterface {
 
-    private int currentEnergyStorage;
-    private final double unluckyProbability;
+    private int currentEnergyStorage = DEFAULT_ENERGY;
+    private final double taskGenerationProbability;
     private final Random random;
 
-    public TaskGenerator(double unluckyProbability) {
-        this(unluckyProbability, new Random());
+    public TaskGenerator(double taskGenerationProbability) {
+        this.taskGenerationProbability = taskGenerationProbability;
+        this.random = new Random();
     }
 
-    public TaskGenerator(double unluckyProbability, long randomSeed) {
-        this(unluckyProbability, new Random(randomSeed));
+    public TaskGenerator(double taskGenerationProbability, long randomSeed) {
+        this.taskGenerationProbability = taskGenerationProbability;
+        this.random = new Random(randomSeed);
     }
 
-    public TaskGenerator(double unluckyProbability, Random random) {
-        this.currentEnergyStorage = 0;
-        this.unluckyProbability = unluckyProbability;
+    public TaskGenerator(double taskGenerationProbability, Random random) {
+        this.taskGenerationProbability = taskGenerationProbability;
         this.random = random;
     }
 
     @Override
     public Task getNewTask(int hourCreated, TaskInterface.TaskType taskType, String taskDescription) {
-        int priority = 0;
-        if (generateTask()) {
-            priority = random.nextInt(10) + 1;
-        }
-        return new Task(hourCreated, taskType, taskDescription, priority);
+        return new Task(0, taskType, hourCreated, taskDescription);
     }
 
     @Override
     public void decrementEnergyStorage(TaskInterface.TaskType taskType) {
-        int energyCost = Task.getEnergyCost(taskType);
+        int energyCost = taskType.getEnergyPerHour();
         currentEnergyStorage -= energyCost;
-        if (currentEnergyStorage < 0) {
-            currentEnergyStorage = 0;
-        }
     }
 
     @Override
     public void resetCurrentEnergyStorage() {
-        currentEnergyStorage = 0;
+        currentEnergyStorage = DEFAULT_ENERGY;
     }
 
     @Override
@@ -55,30 +49,35 @@ public class TaskGenerator implements TaskGeneratorInterface {
 
     @Override
     public boolean generateTask() {
-        return random.nextDouble() < unluckyProbability;
+        if (taskGenerationProbability > random.nextDouble()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public int getUnlucky(Task task, double unluckyProbability) {
-        if (generateTask()) {
-            if (random.nextDouble() < unluckyProbability) {
-                if (random.nextBoolean()) {
-                    task.setPassedOut(true);
-                } else {
-                    task.setDied(true);
-                }
+        if (unluckyProbability <= task.getTaskType().getPassingOutProbability()) {
+            if (unluckyProbability <= task.getTaskType().getDyingProbability() && task.getTaskType() == TaskInterface.TaskType.MINING) {
+                currentEnergyStorage -= currentEnergyStorage * 0.75;
+                task.setPriority(0);
+                return 2;
+            } else {
+                currentEnergyStorage -= currentEnergyStorage * 0.5;
                 return 1;
             }
+        } else {
+            return 0;
         }
-        return 0;
     }
 
     /**
-    * Create a String containing the Task's information.
-    *
-    * @param task - the Task
-    * @param taskType - the Task's type
-    */
+     * Create a String containing the Task's information.
+     *
+     * @param task - the Task
+     * @param taskType - the Task's type
+     */
     @Override
     public String toString(Task task, Task.TaskType taskType) {
         if(taskType == Task.TaskType.MINING) {

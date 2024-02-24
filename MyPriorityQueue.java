@@ -1,13 +1,12 @@
 public class MyPriorityQueue extends MaxHeap implements PriorityQueueInterface {
-
 	@Override
-	public void enqueue(Object task) {
-		super.add(task); // call the add method from the parent MaxHeap class
+	public void enqueue(Task task) {
+		super.insert(task);
 	}
 
 	@Override
 	public Task dequeue() {
-		return (Task) super.removeMax(); // cast the returned object from the parent MaxHeap class to Task
+		return super.extractMax(); // cast the returned object from the parent MaxHeap class to Task
 	}
 
 	@Override
@@ -17,13 +16,16 @@ public class MyPriorityQueue extends MaxHeap implements PriorityQueueInterface {
 
 	@Override
 	public void update(int timeToIncrementPriority, int maxPriority) {
-		for (int i = 0; i < super.size(); i++) { // loop through all elements in the queue
-			Task task = (Task) super.get(i); // cast the object to Task
-			int waitingTime = task.getWaitingTime(); // get the time since the task was added
-			if (waitingTime >= timeToIncrementPriority && task.getPriority() < maxPriority) {
-				task.setPriority(task.getPriority() + 1); // increase the priority of the task
+		for(int i = 0; i < size; i++) {
+			Task task = heap[i];
+			task.incrementWaitingTime();
+			if (task.getWaitingTime() >= timeToIncrementPriority) {
+				task.resetWaitingTime();
+				if (task.getPriority() < maxPriority) {
+					task.setPriority(task.getPriority() + 1);
+					increaseKey(i, task.getPriority());
+				}
 			}
 		}
-		super.rebuildHeap(); // rebuild the heap after updating the priorities
 	}
 }
