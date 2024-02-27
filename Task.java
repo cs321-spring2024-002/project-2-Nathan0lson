@@ -67,4 +67,10 @@ public class Task implements TaskInterface, Comparable<Task> {
             return 0;
         }
     }
+
+    
+    @Override
+    public String toString() {
+        return getTaskType() + " " + getTaskDescription() + " at Hour: " + hourCreated + ":00";
+    }
 }
