@@ -34,8 +34,8 @@ the IDE, and I could never figure out why.
 ## Compiling and Using
 
 In order to run the program, you would use the command: 
-java MyLifeInStardew <max-priority-level> <time-to-increment-priority> 
-<total simulation-time in days> <task-generation-probability> [<seed>]
+java MyLifeInStardew (max-priority-level) (time-to-increment-priority) 
+(total simulation-time in days) (task-generation-probability) (seed)
 The command generates a simulation based off of the information you
 give to it, and then displays the results.
 
