@@ -1,42 +1,51 @@
-Name:
+Name: Nathan Olson
 
-Grade: /90
+Grade: 67/90
 
 Rubric for the Stardew Valley using Priority Queue project
 
 Comments:
+	Make sure that when you use junit to provide the jar file
+	Have Javadocs for every method, class and constructor 
+	Have comments on lines that may be confusing for readers to read
 
 -Submission
-	-Required files are not missing [return to student for fixing, if needed]:
+	-Required files are not missing [return to student for fixing, if needed]: 
 		-Provide junit jar file if you are using JUnit testing
+			-1, didn't provide junit jar file
 	-Did not submit unnecessary files (such as .class files):
-	-Provided classes weren't modified [0 points, not graded]:
+		-1, included test-cases folder
+	-Provided classes weren't modified [0 points, not graded]: okay
 
 Documentation: [20 points]
 	-README.md: 
+		-1, doesn't show how to compile the file
+		-1, doesn't give an example of the results
 	-Javadoc for all methods:
+		-5, no Javadocs on any method, constructor, or class
 	-Appropriate but not excessive inline comments:
+		-4, only comments in MyPriorityQueue
 
 Code design and style: [15 points]
-	-Appropriate variable and method names:
-	-Appropriate code style:
-	-Interfaces - all provided interfaces were implemented:
-	-Inheritance - MyPriorityQueue class extends MaxHeap class appropriately:
-	-MaxHeap - grows by doubling the array using a private method:
+	-Appropriate variable and method names: okay
+	-Appropriate code style: okay
+	-Interfaces - all provided interfaces were implemented: okay
+	-Inheritance - MyPriorityQueue class extends MaxHeap class appropriately: okay
+	-MaxHeap - grows by doubling the array using a private method: private heapify, but called in public insert
 
 Functionality: [55 points]
-	-MaxHeapTest - appropriate unit tests for MaxHeap class [10 points]:
+	-MaxHeapTest - appropriate unit tests for MaxHeap class [10 points]: -10, jar file not provided so unable to run
 
 	-Matches outputs for the six inputs in the test-cases subfolder [36 points]:
-		-in1/out1:
-		-in2/out2:
-		-in3/out3:
-		-in4/out4:
-		-in5/out5:
-		-in6/out6:
+		-in1/out1: okay
+		-in2/out2: okay
+		-in3/out3: okay
+		-in4/out4: okay
+		-in5/out5: okay
+		-in6/out6: okay
 
 Extra Credit: Generic MaxHeap:
-	-Used generic MaxHeap [+10 points]:
+	-Used generic MaxHeap [+10 points]: no
 		
 
 
